@@ -17,7 +17,7 @@ class Mobilecontrols extends FlxSpriteGroup
 
 	var config:Config;
 
-	public function new() 
+	public function new(block:Bool) 
 	{
 		super();
 		
@@ -30,29 +30,38 @@ class Mobilecontrols extends FlxSpriteGroup
 		switch (mode)
 		{
 			case VIRTUALPAD_RIGHT:
-				initVirtualPad(0);
+				initVirtualPad(0, block);
 			case VIRTUALPAD_LEFT:
-				initVirtualPad(1);
+				initVirtualPad(1, block);
 			case VIRTUALPAD_CUSTOM:
-				initVirtualPad(2);
+				initVirtualPad(2, block);
 			case HITBOX:
-				_hitbox = new Hitbox();
+				_hitbox = new Hitbox(block);
 				add(_hitbox);
 			case KEYBOARD:
 		}
 	}
 
-	function initVirtualPad(vpadMode:Int) 
+	function initVirtualPad(vpadMode:Int, block:Bool) 
 	{
 		switch (vpadMode)
 		{
 			case 1:
-				_virtualPad = new FlxVirtualPad(FULL, NONE);
+				if (!block)
+					_virtualPad = new FlxVirtualPad(FULL, NONE);
+				else
+					_virtualPad = new FlxVirtualPad(LEFT_FULL_BLOCK, NONE);
 			case 2:
-				_virtualPad = new FlxVirtualPad(FULL, NONE);
-				_virtualPad = config.loadcustom(_virtualPad);
+				if (!block)
+					_virtualPad = new FlxVirtualPad(FULL, NONE);
+				else
+					_virtualPad = new FlxVirtualPad(LEFT_FULL_BLOCK, NONE);
+				_virtualPad = config.loadcustom(_virtualPad, false);
 			default: // 0
-				_virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+				if (!block) 
+					_virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+				else
+					_virtualPad = new FlxVirtualPad(RIGHT_FULL_BLOCK, NONE);
 		}
 		
 		_virtualPad.alpha = 0.75;

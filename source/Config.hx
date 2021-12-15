@@ -151,7 +151,7 @@ class Config {
 		save.flush();
 	}
 
-	public function loadcustom(_pad:FlxVirtualPad):FlxVirtualPad {
+	public function loadcustom(_pad:FlxVirtualPad, deez:Bool):FlxVirtualPad {
 		//load pad
 		if (save.data.buttons == null) return _pad;
 		var tempCount:Int = 0;

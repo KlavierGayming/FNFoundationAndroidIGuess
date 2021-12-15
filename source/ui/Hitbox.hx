@@ -21,46 +21,57 @@ class Hitbox extends FlxSpriteGroup
 	public var buttonDown:FlxButton;
 	public var buttonUp:FlxButton;
 	public var buttonRight:FlxButton;
+	public var buttonBlock:FlxButton;
+
+	var blockbox = false;
 	
-	public function new(?widghtScreen:Float)
+	public function new(?widghtScreen:Float, ?blockBox:Bool = false)
 	{
 		super();
-
+		blockbox = blockBox;
 		if (widghtScreen == null)
 			widghtScreen = FlxG.width;
 
-		sizex = widghtScreen != null ? widghtScreen / 4 : 320;
+		sizex = (blockBox ? 294:320);
 
 		
 		//add graphic
 		hitbox = new FlxSpriteGroup();
 		hitbox.scrollFactor.set();
 
-		var hitbox_hint:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image('hitbox/hitbox_hint', 'shared'));
+		var hitbox_hint:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image('hitbox/hitbox_hint' + (blockBox?"block":""), 'shared'));
 
 		hitbox_hint.alpha = 0.35;
-
-		if (sizex != 320)
-		{
-		hitbox_hint.setGraphicSize(FlxG.width);
-		hitbox_hint.updateHitbox();
-		}
 			
 		add(hitbox_hint);
 
+		if (!blockBox)
+		{
+			hitbox.add(add(buttonLeft = createhitbox(0, "left")));
 
-		hitbox.add(add(buttonLeft = createhitbox(0, "left")));
+			hitbox.add(add(buttonDown = createhitbox(sizex, "down")));
 
-		hitbox.add(add(buttonDown = createhitbox(sizex, "down")));
+			hitbox.add(add(buttonUp = createhitbox(sizex * 2, "up")));
 
-		hitbox.add(add(buttonUp = createhitbox(sizex * 2, "up")));
+			hitbox.add(add(buttonRight = createhitbox(sizex * 3, "right")));
+		}
+		else
+		{
+			hitbox.add(add(buttonLeft = createhitbox(0, "left")));
 
-		hitbox.add(add(buttonRight = createhitbox(sizex * 3, "right")));
+			hitbox.add(add(buttonDown = createhitbox(294, "down")));
+
+			hitbox.add(add(buttonBlock = createhitbox(594, "block")));
+
+			hitbox.add(add(buttonUp = createhitbox(688, "up")));
+
+			hitbox.add(add(buttonRight = createhitbox(984, "right")));
+		}
 	}
 
 	public function createhitbox(X:Float, framestring:String) {
 		var button = new FlxButton(X, 0);
-		var frames = Paths.getSparrowAtlas('hitbox/hitbox', 'shared');
+		var frames = if (!blockbox) Paths.getSparrowAtlas('hitbox/hitbox', 'shared') else Paths.getSparrowAtlas('hitbox/hitboxblock', 'shared');
 		
 		var graphic:FlxGraphic = FlxGraphic.fromFrame(frames.getByName(framestring));
 
@@ -68,8 +79,6 @@ class Hitbox extends FlxSpriteGroup
 
 		/*button.width = sizex;
 		button.height = FlxG.height;*/
-		button.setGraphicSize(Std.int(sizex), FlxG.height);
-		button.updateHitbox();
 
 		button.alpha = 0;
 
