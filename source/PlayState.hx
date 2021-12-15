@@ -218,6 +218,10 @@ class PlayState extends MusicBeatState
 	var wiggleShit:WiggleEffect = new WiggleEffect();
 	var bgGhouls:BGSprite;
 
+	var two:FlxSprite;
+	var over:FlxSprite;
+	var blackness:FlxSprite;
+
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
@@ -368,6 +372,13 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
+			case 'larrybg':
+				var one = new BGSprite('Part1', -850, -360);
+				add(one);
+
+				two = new FlxSprite(-800, -600).loadGraphic(Paths.image('Part2', 'shared'));
+				add(two);
+				two.visible = false;
 			case 'stage': //Week 1
 				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 				add(bg);
@@ -653,6 +664,20 @@ class PlayState extends MusicBeatState
 
 		add(dadGroup);
 		add(boyfriendGroup);
+
+		if (SONG.song.toLowerCase() == 'my-world')
+		{
+			blackness = new FlxSprite(0,0).makeGraphic(1280,720,FlxColor.BLACK);
+			blackness.alpha = 0;
+			blackness.cameras = [camHUD];
+			add(blackness);
+			over = new FlxSprite(-60,-60).loadGraphic(Paths.image('CorrosionEffect', 'shared'));
+			over.cameras = [camHUD];
+			over.scale.set(0.95,0.95);
+			over.updateHitbox();
+			add(over);
+			over.alpha=0;
+		}
 		
 		if(curStage == 'spooky') {
 			add(halloweenWhite);
@@ -2468,6 +2493,13 @@ class PlayState extends MusicBeatState
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
 		switch(eventName) {
+			case 'myworldeffect': 
+				FlxG.camera.flash();
+				over.alpha = 0.2;
+				blackness.alpha = 0.75;
+				two.visible = true;
+				gfGroup.visible = false;
+				FlxTween.tween(over, {alpha: 0.75}, 0.75, {type: FlxTween.PINGPONG});
 			case 'Hey!':
 				var value:Int = 2;
 				switch(value1.toLowerCase().trim()) {

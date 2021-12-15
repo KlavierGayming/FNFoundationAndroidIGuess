@@ -96,6 +96,23 @@ class Note extends FlxSprite
 						missHealth = 0.3;
 					}
 					hitCausesMiss = true;
+				case 'bullet decoration':
+					reloadNote('sammybullet');
+					colorSwap.hue = 0;
+					colorSwap.saturation = 0;
+					colorSwap.brightness = 0;
+				case 'grab Note':
+					ignoreNote = mustPress;
+					reloadNote('Grab');
+					colorSwap.hue = 0;
+					colorSwap.saturation = 0;
+					colorSwap.brightness = 0;
+					if(isSustainNote) {
+						missHealth = 2 - 0.0475;
+					} else {
+						missHealth = 2 - 0.0475;
+					}
+					hitCausesMiss = true;
 				case 'No Animation':
 					noAnimation = true;
 			}
