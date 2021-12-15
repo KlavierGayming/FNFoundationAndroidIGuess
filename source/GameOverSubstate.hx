@@ -22,7 +22,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var lePlayState:PlayState;
 
-	public static var characterName:String = 'bf';
+	public static var characterName:String = 'bf-default-death';
 	public static var deathSoundName:String = 'fnf_loss_sfx';
 	public static var loopSoundName:String = 'gameOver';
 	public static var endSoundName:String = 'gameOverEnd';
@@ -41,6 +41,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		super();
 
 		Conductor.songPosition = 0;
+		if (PlayState.SONG.song.toLowerCase() == 'terminated')
+			characterName = 'bf-goc-death';
 
 		bf = new Boyfriend(x, y, characterName);
 		add(bf);

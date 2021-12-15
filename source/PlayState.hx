@@ -379,6 +379,16 @@ class PlayState extends MusicBeatState
 				two = new FlxSprite(-800, -600).loadGraphic(Paths.image('Part2', 'shared'));
 				add(two);
 				two.visible = false;
+			case 'gocbg':
+				var xd = new BGSprite('GOCBG', -600,-400);
+				xd.setGraphicSize(Std.int(xd.width * 1.5));
+				xd.updateHitbox();
+				add(xd);
+			case 'doctorbg':
+				var xd = new BGSprite('049BG', -600,-400);
+				xd.setGraphicSize(Std.int(xd.width * 1.5));
+				xd.updateHitbox();
+				add(xd);
 			case 'stage': //Week 1
 				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 				add(bg);
@@ -904,7 +914,6 @@ class PlayState extends MusicBeatState
 		healthBarBG.visible = !ClientPrefs.hideHud;
 		healthBarBG.xAdd = -4;
 		healthBarBG.yAdd = -4;
-		add(healthBarBG);
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
@@ -914,6 +923,7 @@ class PlayState extends MusicBeatState
 		healthBar.visible = !ClientPrefs.hideHud;
 		add(healthBar);
 		healthBarBG.sprTracker = healthBar;
+		add(healthBarBG);
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
@@ -1569,6 +1579,7 @@ class PlayState extends MusicBeatState
 
 		for (section in noteData)
 		{
+
 			for (songNotes in section.sectionNotes)
 			{
 				if(songNotes[1] > -1) { //Real notes
@@ -2310,9 +2321,20 @@ class PlayState extends MusicBeatState
 						if(daNote.noteType == 'GF Sing') {
 							gf.playAnim(animToPlay + altAnim, true);
 							gf.holdTimer = 0;
+						}
+						else if (daNote.noteType == 'bullet decoration' && dad.curCharacter == 'goc')
+						{
+							dad.playAnim('shooting');
+							FlxG.camera.flash();
+							health -= 0.5;
 						} else {
 							dad.playAnim(animToPlay + altAnim, true);
 							dad.holdTimer = 0;
+							if (altAnim == '-alt') {
+								iconP2.changeIcon('049Icon2');
+							} else {
+								iconP2.changeIcon(dad.healthIcon);
+							}
 						}
 					}
 
@@ -2492,7 +2514,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
-		switch(eventName) {
+		switch(eventName) {				
 			case 'myworldeffect': 
 				FlxG.camera.flash();
 				over.alpha = 0.2;
