@@ -2522,6 +2522,15 @@ class PlayState extends MusicBeatState
 				two.visible = true;
 				gfGroup.visible = false;
 				FlxTween.tween(over, {alpha: 0.75}, 0.75, {type: FlxTween.PINGPONG});
+			case 'dodgemechanic':
+				ass.visible = true;
+				check = true;
+				new FlxTimer().start(1.5, function(tmr){
+					dad.playAnim('shoot');
+					if (!controls.BLOCK) {
+						health = 0;
+					}
+				});
 			case 'Hey!':
 				var value:Int = 2;
 				switch(value1.toLowerCase().trim()) {
