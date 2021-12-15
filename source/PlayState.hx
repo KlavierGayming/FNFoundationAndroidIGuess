@@ -221,6 +221,9 @@ class PlayState extends MusicBeatState
 	var two:FlxSprite;
 	var over:FlxSprite;
 	var blackness:FlxSprite;
+	var check = false;
+	var ass:FlxSprite;
+	var block=false;
 
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
@@ -389,6 +392,10 @@ class PlayState extends MusicBeatState
 				xd.setGraphicSize(Std.int(xd.width * 1.5));
 				xd.updateHitbox();
 				add(xd);
+			case 'captivated':
+				var xd = new BGSprite('captivatedBG', -600,-400);
+				add(xd);
+				block = true;
 			case 'stage': //Week 1
 				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 				add(bg);
@@ -635,7 +642,7 @@ class PlayState extends MusicBeatState
 				GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
 				GameOverSubstate.characterName = 'bf-pixel-dead';
 
-				/*if(!ClientPrefs.lowQuality) { //Does this even do something?
+				/*if(!ClientPrefs.lowQuality) { //Does this even do something? // its supposed to be a fucking shader
 					var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
 					var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
 				}*/
@@ -687,6 +694,14 @@ class PlayState extends MusicBeatState
 			over.updateHitbox();
 			add(over);
 			over.alpha=0;
+		} else if (SONG.song.toLowerCase() == 'captivated') {
+			ass = new FlxSprite(100, 100);
+			ass.frames = Paths.getSparrowAtlas('dodge', 'shared');
+			ass.animation.addByIndices('press', 'atkatkakkcktka', [1], '');
+			ass.animation.addByIndices('notpressed', 'atkatkakkcktka', [5], '');
+			ass.visible = false;
+			ass.cameras = [camHUD];
+			add(ass);
 		}
 		
 		if(curStage == 'spooky') {
@@ -972,9 +987,9 @@ class PlayState extends MusicBeatState
 			switch (mcontrols.mode)
 			{
 				case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
-					controls.setVirtualPadNOTES(mcontrols._virtualPad, FULL, NONE);
+					controls.setVirtualPadNOTES(mcontrols._virtualPad, (check?LEFT_FULL_BLOCK:FULL), NONE);
 				case HITBOX:
-					controls.setHitBoxNOTES(mcontrols._hitbox);
+					controls.setHitBoxNOTES(mcontrols._hitbox, check);
 				default:
 			}
 			trackedinputsNOTES = controls.trackedinputsNOTES;
@@ -1892,6 +1907,15 @@ class PlayState extends MusicBeatState
 
 		callOnLuas('onUpdate', [elapsed]);
 
+		if (check)
+		{
+			if (controls.NOTE_BLOCK){
+				ass.animation.play('press');
+			} else {
+				ass.animation.play('notpressed');
+			}
+		}
+
 		switch (curStage)
 		{
 			case 'schoolEvil':
@@ -2527,9 +2551,11 @@ class PlayState extends MusicBeatState
 				check = true;
 				new FlxTimer().start(1.5, function(tmr){
 					dad.playAnim('shoot');
-					if (!controls.BLOCK) {
+					ass.visible = false;
+					if (!controls.NOTE_BLOCK) {
 						health = 0;
 					}
+					check = false;
 				});
 			case 'Hey!':
 				var value:Int = 2;
