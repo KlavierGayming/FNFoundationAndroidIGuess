@@ -1,0 +1,88 @@
+{
+	"animations": [
+		{
+			"loop": true,
+			"offsets": [
+				1,
+				-1
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "val idle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-26,
+				-8
+			],
+			"anim": "shoot",
+			"fps": 24,
+			"name": "val slash",
+			"indices": []},
+		{
+			"loop": false,
+			"offsets": [
+				124,
+				-8
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "val left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-2,
+				-8
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "val right",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				109,
+				38
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "val up",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-2,
+				-147
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "val down",
+			"indices": []
+		}
+	],
+	"no_antialiasing": true,
+	"image": "characters/foundation/valorant",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "ValerieIcons",
+	"flip_x": false,
+	"healthbar_colors": [
+		184,
+		41,
+		14
+	],
+	"camera_position": [
+		-20,
+		-10
+	],
+	"sing_duration": 6.1,
+	"scale": 1
+}

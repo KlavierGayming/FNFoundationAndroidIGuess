@@ -14,7 +14,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				5,
+				12,
 				-6
 			],
 			"anim": "singLEFT",
@@ -47,7 +47,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				-48,
+				-38,
 				-7
 			],
 			"anim": "singRIGHT",
@@ -58,8 +58,8 @@
 		{
 			"loop": false,
 			"offsets": [
-				7,
-				19
+				12,
+				24
 			],
 			"anim": "singLEFTmiss",
 			"fps": 24,
@@ -69,7 +69,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				-15,
+				-11,
 				-19
 			],
 			"anim": "singDOWNmiss",
@@ -80,7 +80,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				-36,
+				-29,
 				27
 			],
 			"anim": "singUPmiss",
@@ -91,8 +91,8 @@
 		{
 			"loop": false,
 			"offsets": [
-				-44,
-				22
+				-30,
+				21
 			],
 			"anim": "singRIGHTmiss",
 			"fps": 24,
@@ -208,9 +208,9 @@
 	"healthicon": "bf",
 	"flip_x": true,
 	"healthbar_colors": [
-		49,
-		176,
-		209
+		187,
+		127,
+		74
 	],
 	"camera_position": [
 		0,
