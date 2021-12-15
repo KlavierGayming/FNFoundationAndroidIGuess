@@ -33,6 +33,9 @@ class CustomControlsState extends MusicBeatSubstate
 	var left_text:FlxText;
 	var right_text:FlxText;
 
+	var block_text:FlxText;
+
+
 	var inputvari:FlxText;
 
 	var leftArrow:FlxSprite;
@@ -60,7 +63,7 @@ class CustomControlsState extends MusicBeatSubstate
 		
 
 		//pad
-		_pad = new FlxVirtualPad(RIGHT_FULL, NONE);
+		_pad = new FlxVirtualPad(RIGHT_FULL_BLOCK, NONE);
 		_pad.alpha = 0;
 		
 
@@ -89,10 +92,11 @@ class CustomControlsState extends MusicBeatSubstate
 		down_text = new FlxText(200, 250, 0,"Button down x:" + _pad.buttonDown.x +" y:" + _pad.buttonDown.y, 24);
 		left_text = new FlxText(200, 300, 0,"Button left x:" + _pad.buttonLeft.x +" y:" + _pad.buttonLeft.y, 24);
 		right_text = new FlxText(200, 350, 0,"Button right x:" + _pad.buttonRight.x +" y:" + _pad.buttonRight.y, 24);
+		block_text = new FlxText(200, 400, 0,"Button block x:" + _pad.buttonBlock.x +" y:" + _pad.buttonBlock.y, 24);
 		
 		//hitboxes
 
-		_hb = new Hitbox();
+		_hb = new Hitbox(true);
 		_hb.visible = false;
 
 		// buttons
@@ -139,6 +143,7 @@ class CustomControlsState extends MusicBeatSubstate
 		add(down_text);
 		add(left_text);
 		add(right_text);
+		add(block_text);
 
 		// change selection
 		changeSelection();
@@ -157,7 +162,11 @@ class CustomControlsState extends MusicBeatSubstate
 		if (exitbutton.justReleased || androidback){
 			FlxG.switchState(new OptionsState());
 		}
-		
+		if(controls.UI_LEFT_P){
+			changeSelection(-1);
+		}else if (controls.UI_RIGHT_P){
+			changeSelection(1);
+		}
 		for (touch in FlxG.touches.list){
 			//left arrow animation
 			arrowanimate(touch);
@@ -201,18 +210,18 @@ class CustomControlsState extends MusicBeatSubstate
 				}
 			
 			_hb.visible = false;
-	
+			setbuttontexts();
 			switch curSelected{
 				case 0:
 					this.remove(_pad);
 					_pad = null;
-					_pad = new FlxVirtualPad(RIGHT_FULL, NONE);
+					_pad = new FlxVirtualPad(RIGHT_FULL_BLOCK, NONE);
 					_pad.alpha = 0.75;
 					this.add(_pad);
 				case 1:
 					this.remove(_pad);
 					_pad = null;
-					_pad = new FlxVirtualPad(FULL, NONE);
+					_pad = new FlxVirtualPad(LEFT_FULL_BLOCK, NONE);
 					_pad.alpha = 0.75;
 					this.add(_pad);
 				case 2:
@@ -293,6 +302,13 @@ class CustomControlsState extends MusicBeatSubstate
 
 				movebutton(touch, _pad.buttonLeft);
 			}
+
+			if (_pad.buttonBlock.justPressed) {
+				if (curSelected != 3)
+					changeSelection(0,3);
+
+				movebutton(touch, _pad.buttonBlock);
+			}
 		}
 	}
 
@@ -308,6 +324,7 @@ class CustomControlsState extends MusicBeatSubstate
 		down_text.text = "Button down x:" + _pad.buttonDown.x +" y:" + _pad.buttonDown.y;
 		left_text.text = "Button left x:" + _pad.buttonLeft.x +" y:" + _pad.buttonLeft.y;
 		right_text.text = "Button right x:" + _pad.buttonRight.x +" y:" + _pad.buttonRight.y;
+		block_text.text = "Button block x:" + _pad.buttonBlock.x +" y:" + _pad.buttonBlock.y;
 	}
 
 	function SpamCheck(){
@@ -350,7 +367,7 @@ class CustomControlsState extends MusicBeatSubstate
 
 	function loadcustom():Void{
 		//load pad
-		_pad = config.loadcustom(_pad);	
+		_pad = config.loadcustom(_pad, true);
 	
 	}
 

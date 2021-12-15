@@ -72,7 +72,9 @@ class OptionsState extends MusicBeatState
 		super.closeSubState();
 		ClientPrefs.saveSettings();
 		changeSelection();
+		#if mobileC
                 _virtualpad.alpha = 0.75;
+		#end
       	}
 
 	override function update(elapsed:Float) {
@@ -94,8 +96,9 @@ class OptionsState extends MusicBeatState
 			for (item in grpOptions.members) {
 				item.alpha = 0;
 			}
-
-                        _virtualpad.alpha = 0;
+			#if mobileC
+                _virtualpad.alpha = 0;
+			#end
 
 			switch(options[curSelected]) {
 				case 'Notes':
