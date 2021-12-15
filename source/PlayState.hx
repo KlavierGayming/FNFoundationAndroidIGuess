@@ -983,13 +983,13 @@ class PlayState extends MusicBeatState
 		doof.cameras = [camHUD];
 
 		#if mobileC
-			mcontrols = new Mobilecontrols();
+			mcontrols = new Mobilecontrols(block);
 			switch (mcontrols.mode)
 			{
 				case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
-					controls.setVirtualPadNOTES(mcontrols._virtualPad, (check?LEFT_FULL_BLOCK:FULL), NONE);
+					controls.setVirtualPadNOTES(mcontrols._virtualPad, (block?LEFT_FULL_BLOCK:FULL), NONE);
 				case HITBOX:
-					controls.setHitBoxNOTES(mcontrols._hitbox, check);
+					controls.setHitBoxNOTES(mcontrols._hitbox, block);
 				default:
 			}
 			trackedinputsNOTES = controls.trackedinputsNOTES;
