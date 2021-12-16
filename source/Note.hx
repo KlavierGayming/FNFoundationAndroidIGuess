@@ -102,7 +102,7 @@ class Note extends FlxSprite
 					colorSwap.saturation = 0;
 					colorSwap.brightness = 0;
 				case 'grab Note':
-					ignoreNote = mustPress;
+					ignoreNote = true;
 					reloadNote('Grab');
 					colorSwap.hue = 0;
 					colorSwap.saturation = 0;

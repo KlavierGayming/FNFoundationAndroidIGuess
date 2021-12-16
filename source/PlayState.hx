@@ -224,6 +224,9 @@ class PlayState extends MusicBeatState
 	var check = false;
 	var ass:FlxSprite;
 	var block=false;
+	var dadTurn = false;
+	var origCamX = 0.0;
+	var origCamY = 0.0;
 
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
@@ -1905,6 +1908,7 @@ class PlayState extends MusicBeatState
 			iconP1.swapOldIcon();
 		}*/
 
+
 		callOnLuas('onUpdate', [elapsed]);
 
 		if (check)
@@ -1914,6 +1918,22 @@ class PlayState extends MusicBeatState
 			} else {
 				ass.animation.play('notpressed');
 			}
+		}
+
+		var char:Character = (dadTurn?dad:boyfriend);
+
+		switch (char.animation.curAnim.name)
+		{
+			case 'singLEFT', 'singLEFT-alt':
+				camFollow.x = origCamX - 30;
+			case 'singRIGHT', 'singRIGHT-alt':
+				camFollow.x = origCamX + 30;
+			case 'singDOWN', 'singDOWN-alt':
+				camFollow.y = origCamY + 30;
+			case 'singUP' | 'singUP-alt':
+				camFollow.y = origCamY - 30;
+			default:
+				camFollow.set(origCamX, origCamY);
 		}
 
 		switch (curStage)
@@ -2348,9 +2368,19 @@ class PlayState extends MusicBeatState
 						}
 						else if (daNote.noteType == 'bullet decoration' && dad.curCharacter == 'goc')
 						{
+							var val = 0.0;
+							if (health > 0.9)
+							{
+								val = (FlxG.random.bool(50) ? 1 : 0.9);
+							}
+							else if (health > 0.9 && health < 1)
+								val = 0.9;
+							else if (health < 0.9)
+								val = 0.1;
+
 							dad.playAnim('shooting');
 							FlxG.camera.flash();
-							health -= 0.5;
+							health = val;
 						} else {
 							dad.playAnim(animToPlay + altAnim, true);
 							dad.holdTimer = 0;
@@ -2908,10 +2938,15 @@ class PlayState extends MusicBeatState
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			camFollow.x += dad.cameraPosition[0];
 			camFollow.y += dad.cameraPosition[1];
+			dadTurn = true;
+
+			origCamX = camFollow.x;
+			origCamY = camFollow.y;
+
 			tweenCamIn();
 		} else {
+			dadTurn = false;
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-
 			switch (curStage)
 			{
 				case 'limo':
@@ -2924,6 +2959,9 @@ class PlayState extends MusicBeatState
 			}
 			camFollow.x -= boyfriend.cameraPosition[0];
 			camFollow.y += boyfriend.cameraPosition[1];
+
+			origCamX = camFollow.x;
+			origCamY = camFollow.y;
 
 			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1) {
 				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
