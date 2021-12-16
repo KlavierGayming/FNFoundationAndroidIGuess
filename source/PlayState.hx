@@ -2368,19 +2368,9 @@ class PlayState extends MusicBeatState
 						}
 						else if (daNote.noteType == 'bullet decoration' && dad.curCharacter == 'goc')
 						{
-							var val = 0.0;
-							if (health > 0.9)
-							{
-								val = (FlxG.random.bool(50) ? 1 : 0.9);
-							}
-							else if (health > 0.9 && health < 1)
-								val = 0.9;
-							else if (health < 0.9)
-								val = 0.1;
-
 							dad.playAnim('shooting');
 							FlxG.camera.flash();
-							health = val;
+							health = 0.9;
 						} else {
 							dad.playAnim(animToPlay + altAnim, true);
 							dad.holdTimer = 0;
